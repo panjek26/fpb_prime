@@ -1,0 +1,14 @@
+def is_prime(num):
+    if num <= 1:
+        return False
+    for i in range(2,(num//2)): #output [2,3,dst]
+        if num % i == 0:
+            return False
+    return True
+
+num = int(input("Masukkan bilangan bulat positif: "))
+
+if is_prime(num):
+    print(num, "adalah bilangan prima")
+else:
+    print(num, "bukan bilangan prima")
