@@ -1,26 +1,17 @@
-from flask import Flask, request, jsonify
-from flask_restful import Api, Resource
+from flask import Flask, jsonify, request
 
 app = Flask(__name__)
-api = Api(app)
 
-class Prima(Resource):
-    def post(self):
-        data = request.get_json()
-        num = data['num']
-        if num > 1:
-            for i in range(2,(num//2)):
-                if (num % i) == 0:
-                    result = {'is_prima': False}
-                    return jsonify(result)
-            else:
-                result = {'is_prima': True}
-                return jsonify(result)
-        else:
-            result = {'is_prima': False}
-            return jsonify(result)
-        
-api.add_resource(Prima, '/prima')
+@app.route('/prima', methods=['POST'])
+def isprime():
+    data = request.get_json()
+    n = data['num']
+    if n < 2:
+        return jsonify({'result': 'false'})
+    for i in range(2, int(n ** 0.5) + 1):
+        if n % i == 0:
+            return jsonify({'result': 'false'})
+    return jsonify({'result': 'true'})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
