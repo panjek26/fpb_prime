@@ -1,9 +1,20 @@
-def fpb(a, b):
-    while b != 0:
-        a, b = b, a % b
-    return a
+from flask import Flask, request, jsonify
+from flask_restful import Api, Resource
 
-num1 = int(input("Masukkan bilangan pertama: "))
-num2 = int(input("Masukkan bilangan kedua: "))
+app = Flask(__name__)
+api = Api(app)
 
-print("FPB dari", num1, "dan", num2, "adalah", fpb(num1, num2))
+class FPB(Resource):
+    def post(self):
+        data = request.get_json()
+        a = data['a']
+        b = data['b']
+        while b != 0:
+            a, b = b, a % b
+        result = {'fpb': a}
+        return jsonify(result)
+
+api.add_resource(FPB, '/fpb')
+
+if __name__ == '__main__':
+    app.run(debug=True)
